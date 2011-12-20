@@ -1,0 +1,47 @@
+# MailStoreAgent
+
+## Background
+
+Most websites that authenticate users require some form of user account self-management.
+Users need to register with e-mail and password, verify their e-mail address,
+and to occasionally reset their e-mail and password.
+
+I like to delegate this to other services with [OpenID](http://en.wikipedia.org/wiki/OpenID)
+ and [OAuth](http://en.wikipedia.org/wiki/Oauth),
+but not all clients agree to delegate ownership of their customers' authentication records.
+
+So I'm often stuck with implementing these boilerplace features yet again,
+each of the above use-cases require sending out e-mails to confirm or facilitate.
+Testing this can be a pain-in-the-butt.
+
+Fortunately, [Mikel Lindsaar](https://github.com/mikel)'s
+[Mail](https://github.com/mikel/mail) gem
+has a simple and effective way to store and not send e-mails in order to facilitate test scripts.
+
+    Mail::TestMailer
+
+    Mail.defaults do
+      delivery_method :test
+    end
+
+    # send a few mails ...
+
+    Mail::TestMailer.deliveries.is_a? Array # ==> true
+    Mail::TestMailer.deliveries.first.is_a? Mail::Message # ==> true
+
+I want to take this a step further so that I can verify that mail got sent to the right people in the right order:
+
+## SYNOPSIS
+
+    require 'mail'
+    require 'mail-store-agent'
+
+    Mail.defaults do
+      delivery_method :test
+    end
+
+    Mail::TestMailer.deliveries = MailStoreAgent.new
+
+    # send some mail to someone@someplace.com ...
+
+    Mail::TestMailer.deliveries.get('someone@someplace.com').is_a? Mail::Message # or nil

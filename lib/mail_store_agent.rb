@@ -1,5 +1,5 @@
 
-class TestMailStore < Array
+class MailStoreAgent < Array
 
   def initialize
     @queues = {}

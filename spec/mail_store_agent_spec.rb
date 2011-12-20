@@ -2,22 +2,22 @@ require 'rubygems'
 require 'rspec'
 require 'mail'
 
-require File.join(File.dirname(__FILE__), %w[ .. lib testmailstore ])
+require File.join(File.dirname(__FILE__), %w[ .. lib mail_store_agent ])
 
-describe TestMailStore do
+describe MailStoreAgent do
   before(:all) do
     Mail.defaults do
       delivery_method :test # don't use '='!
-      Mail::TestMailer.deliveries = TestMailStore.new
+      Mail::TestMailer.deliveries = MailStoreAgent.new
     end
   end
 
   it 'is an instance of Array' do
-    TestMailStore.is_a? Array
+    MailStoreAgent.is_a? Array
   end
 
   it 'can be given as argument to Mail::TestMailer#deliveries=()' do
-    Mail::TestMailer.deliveries.is_a? TestMailStore
+    Mail::TestMailer.deliveries.is_a? MailStoreAgent
     Mail::TestMailer.deliveries.should have(0).messages
 
   end
