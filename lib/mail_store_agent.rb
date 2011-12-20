@@ -19,9 +19,14 @@ class MailStoreAgent < Array
   protected
   def sort_mail!
     self[@next_unsorted..self.length].each do |email|
-      email.destinations.each do |dest|
-        @queues[dest] = [] if @queues[dest].nil?
-        @queues[dest].push email
+      #raise "MailStoreAgent is intended to be used as value for Mail::TestMailer.deliveries=().  See README" \
+       # unless email.respond_to?(:destinations) && email.destinations.respond_to?(:each)
+
+      if email.respond_to?(:destinations) && email.destinations.respond_to?(:each) then
+        email.destinations.each do |dest|
+          @queues[dest] = [] if @queues[dest].nil?
+          @queues[dest].push email
+        end
       end
     end
     @next_unsorted = self.length
