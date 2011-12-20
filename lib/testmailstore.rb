@@ -1,23 +1,23 @@
 
 class TestMailStore < Array
 
-  def initialize(filename)
+  def initialize
     @queues = {}
     @next_unsorted = 0  # index of next unsorted e-mail
   end
 
   def accounts
-    self.sort!
+    self.sort_mail!
     return @queues.keys
   end
 
   def get(address)
-    self.sort!
+    self.sort_mail!
     return @queues[address] ? @queues[address].shift : nil
   end
 
-  private
-  def sort!
+  protected
+  def sort_mail!
     self[@next_unsorted..self.length].each do |email|
       email.destinations.each do |dest|
         @queues[dest] = [] if @queues[dest].nil?
