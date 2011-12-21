@@ -42,7 +42,7 @@ I want to take this a step further so that I can verify that mail got sent to th
 
     Mail::TestMailer.deliveries = MailStoreAgent.new
 
-    # send some mail to someone@someplace.com ...
+    # send some mail to someone@someplace.com, and then ...
 
     Mail::TestMailer.deliveries.get('someone@someplace.com').is_a? Mail::Message # or nil
 
