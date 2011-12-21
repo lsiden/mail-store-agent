@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rspec'
 require 'mail'
 
-require File.join(File.dirname(__FILE__), %w[ .. lib mail_store_agent ])
+require File.join(File.dirname(__FILE__), %w[ .. lib mail-store-agent ])
 
 describe MailStoreAgent do
   before(:all) do
