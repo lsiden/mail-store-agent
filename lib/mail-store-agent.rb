@@ -13,7 +13,15 @@ class MailStoreAgent < Array
 
   def get(address)
     self.sort_mail!
-    return @queues[address] ? @queues[address].shift : nil
+    q = @queues[address]
+    return q && q.length > 0 ? q.shift : nil
+  end
+
+  # Peek at next message without removing it from queue
+  def peek(address)
+    self.sort_mail!
+    q = @queues[address]
+    return q && q.length > 0 ? q[0] : nil
   end
 
   protected
