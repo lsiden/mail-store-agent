@@ -30,7 +30,7 @@ describe MailStoreAgent do
       body 'get this?'
     end
     mail.should be_instance_of Mail::Message
-    mail.perform_deliveries.should == true
+    mail.perform_deliveries.should be_true
     mail.errors.each {|e| puts e}
     Mail::TestMailer.deliveries.should have(1).message
 
@@ -58,14 +58,14 @@ describe MailStoreAgent do
   end
 
   it 'knows what accounts have been sent mail' do
-    Mail::TestMailer.deliveries.accounts == ['tarzan@jungle.com', 'jane@jungle.com']
+    Mail::TestMailer.deliveries.accounts.should be == ['tarzan@jungle.com', 'jane@jungle.com']
   end
 
   it 'can return next e-mail for any given address' do
     mail = Mail::TestMailer.deliveries.get('jane@jungle.com')
     mail.should be_kind_of Mail::Message
-    mail.to[0].should == 'jane@jungle.com'
-    mail.subject.should == 'testing now'
+    mail.to[0].should be == 'jane@jungle.com'
+    mail.subject.should be == 'testing now'
   end
 
   it 'returns nil if there is no more mail for address' do
@@ -77,9 +77,9 @@ describe MailStoreAgent do
   end
 
   it 'returns emails in order' do
-    Mail::TestMailer.deliveries.get('tarzan@jungle.com').subject.should == 'just testing'
-    Mail::TestMailer.deliveries.get('tarzan@jungle.com').subject.should == 'still testing'
-    Mail::TestMailer.deliveries.get('tarzan@jungle.com').subject.should == 'keep on testing'
+    Mail::TestMailer.deliveries.get('tarzan@jungle.com').subject.should be == 'just testing'
+    Mail::TestMailer.deliveries.get('tarzan@jungle.com').subject.should be == 'still testing'
+    Mail::TestMailer.deliveries.get('tarzan@jungle.com').subject.should be == 'keep on testing'
     Mail::TestMailer.deliveries.get('tarzan@jungle.com').should be_nil
   end
 
@@ -91,7 +91,7 @@ describe MailStoreAgent do
     Mail::TestMailer.deliveries.push :foo
     Mail::TestMailer.deliveries.push 'baz'
     Mail::TestMailer.deliveries.push Object.new
-    Mail::TestMailer.deliveries.accounts == ['tarzan@jungle.com', 'jane@jungle.com']
+    Mail::TestMailer.deliveries.accounts.should be == ['tarzan@jungle.com', 'jane@jungle.com']
     Mail::TestMailer.deliveries.get('tarzan@jungle.com').should be_nil
     Mail::TestMailer.deliveries.should have(7).items
   end
